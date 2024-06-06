@@ -1,8 +1,14 @@
-import React from 'react'
+import React, { useState } from "react";
 
 function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <div className="fixed z-[999] w-full px-10 py-3 font-['Neue_Montreal'] flex flex-wrap md:flex-nowrap justify-between items-center">
+    <nav className="fixed z-[999] w-full px-10 py-3 font-['Neue_Montreal'] flex flex-wrap md:flex-nowrap justify-between items-center bg-zinc-900 shadow-md">
       <div className="logo mb-4 md:mb-0">
         <svg
           width="72"
@@ -33,22 +39,47 @@ function Navbar() {
           ></path>
         </svg>
       </div>
-      <div className="links flex flex-wrap md:flex-nowrap gap-5 md:gap-10">
+      <button
+        className="md:hidden flex items-center"
+        onClick={toggleMenu}
+        aria-label="Toggle menu"
+      >
+        <svg
+          className="w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"}
+          />
+        </svg>
+      </button>
+      <div
+        className={`links flex-col md:flex md:flex-row gap-5 md:gap-10 fixed md:static inset-0 md:inset-auto bg-zinc-900 md:bg-transparent md:flex items-center justify-center transition-all duration-300 ease-in-out ${
+          isOpen ? "flex" : "hidden"
+        }`}
+      >
         {["Services", "Our Work", "About Us", "Insights", "Contact Us"].map(
           (item, index) => (
             <a
               key={index}
-              className={`text-sm md:text-lg capitalize font-light ${
+              className={`text-sm md:text-lg capitalize font-light px-6 py-3 md:p-0 ${
                 index === 4 && "ml-0 md:ml-32"
               }`}
+              href={`#${item.replace(/\s+/g, "").toLowerCase()}`}
             >
               {item}
             </a>
           )
         )}
       </div>
-    </div>
+    </nav>
   );
 }
 
-export default Navbar
+export default Navbar;
